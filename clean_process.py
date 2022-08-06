@@ -27,7 +27,7 @@ def brackets_remove(df):
     return df
 
 
-def empty_column_remove(df, max_empty_percentage: float, if_strict=False):
+def empty_column_remove(df, max_empty_percentage: float, min_columns, min_rows):
     """删除有效内容过少的行或列"""
     if df is None or df.empty:
         return None
@@ -81,11 +81,8 @@ def empty_column_remove(df, max_empty_percentage: float, if_strict=False):
                     delete_index_list.append(df_index)
             df.drop(delete_index_list, axis=1, inplace=True)
 
-        if df.empty or df.shape[1] == 1 or df.shape[0] <= 2:
-            if if_strict:
-                return None
-            else:
-                return df
+        if df.empty or df.shape[1] < min_columns or df.shape[0] < min_rows:
+            return None
         else:
             return df
     except Exception as e:
@@ -94,7 +91,7 @@ def empty_column_remove(df, max_empty_percentage: float, if_strict=False):
 
 
 # 判断重复表头，并将两个重复的表头合并
-def muti_index_process(df, if_strict=False):
+def muti_index_process(df, min_columns, min_rows):
     if df is None or df.empty:
         return None
     flag = False
@@ -113,11 +110,8 @@ def muti_index_process(df, if_strict=False):
         df.drop([0], axis=0, inplace=True)
         df.reset_index(drop=True, inplace=True)
 
-    if df.empty or df.shape[1] == 1 or df.shape[0] <= 2:
-        if if_strict:
-            return None
-        else:
-            return df
+    if df.empty or df.shape[1] < min_columns or df.shape[0] < min_rows:
+        return None
     else:
         return df
 

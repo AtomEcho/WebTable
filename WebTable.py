@@ -43,9 +43,27 @@ def tradition_to_simple(df):
     return df
 
 
-def table_crawler(url: str, table_name='table', option='stdout', output_file_path='./', origin=False,
-                  json_orient="columns", engine='requests', debug=False, process_list=None, max_empty_percentage=0.3,
-                  min_similarity=0.7, if_strict=False):
+def table_crawler(url: str, table_name: str = 'table', option: str = 'stdout', output_file_path: str = './',
+                  origin: bool = False,
+                  json_orient: str = "columns", engine: str = 'requests', debug: bool = False, process_list=None,
+                  max_empty_percentage: float = 0.3,
+                  min_similarity: float = 0.7, min_columns: int = 1, min_rows: int = 1):
+    """
+    从网页中获取规范化表格
+    :param url: url，如：https://baike.baidu.com/item/复仇者联盟/391050
+    :param table_name: 表格的存储名称
+    :param output_file_path: 输出文件的路径
+    :param option: 表格的输出格式，可选值有：  'stdout','csv','excel','json'
+    :param origin: 是否输出原始数据, 默认为False
+    :param json_orient: 若选择导出为JSON，设置索引字段. 'columns'：列名作为json索引,'index'：行名作为json索引,，默认为'columns'
+    :param engine: 选择获取网页数据的方式,可选requests， pyppeteer， senlenium
+    :param debug: 是否打印调试信息
+    :param process_list: 处理表格过程中所经历的流程
+    :param min_similarity: 表示要使两个表格被合并成一个表格，二者的表头需要的最小相似程度，默认为0.7
+    :param max_empty_percentage: 表示一列中能够接受的空值个数的最大百分比， 默认为0.3
+    :param min_columns: 一个表格中应该含有的最少列数，默认为1
+    :param min_rows: 一个表格中应该含有的最少行数，默认为1
+    """
     if process_list is None:
         process_list = ['brackets_remove', 'change_df', 'empty_column_remove', 'muti_index_process',
                         'first_column_check', 'index_check']
@@ -168,12 +186,13 @@ def table_crawler(url: str, table_name='table', option='stdout', output_file_pat
             if 'change_df' in process_list:
                 new_item = change_df(new_item)
             if 'empty_column_remove' in process_list:
-                new_item = empty_column_remove(new_item, max_empty_percentage, if_strict=if_strict)
+                new_item = empty_column_remove(new_item, max_empty_percentage=max_empty_percentage,
+                                               min_columns=min_columns, min_rows=min_rows)
             if debug:
                 print("去除空列和信息过少的列，将数字表头删去，得到：  ")
                 print(new_item)
             if 'muti_index_process' in process_list:
-                new_item = muti_index_process(new_item, if_strict=if_strict)
+                new_item = muti_index_process(new_item, min_columns=min_columns, min_rows=min_rows)
             if debug:
                 print("合并多行表头，得到：  ")
                 print(new_item)

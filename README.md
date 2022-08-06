@@ -23,8 +23,11 @@ from webtable.webtable import *
 
 ### table_crawler
 ```Python
-table_crawler(url: str, table_name='table', option='stdout', output_file_path='./',
-origin=False, json_orient="columns", engine='requests', debug=False, process_list=None)
+table_crawler(url: str, table_name: str = 'table', option: str = 'stdout', output_file_path: str = './',
+                  origin: bool = False,
+                  json_orient: str = "columns", engine: str = 'requests', debug: bool = False, process_list=None,
+                  max_empty_percentage: float = 0.3, min_similarity: float = 0.7,
+                  min_columns: int = 1, min_rows: int = 1)
 ```
 接受如下参数：
 | 参数名 | 条件 | 类型 | 可选值 | 描述 | 默认参数 |
@@ -40,7 +43,8 @@ origin=False, json_orient="columns", engine='requests', debug=False, process_lis
 | `process_list` | 可选 |`list`|'brackets_remove',<br>'change_df',<br>'empty_column_remove',<br>'muti_index_process',<br>'first_column_check',<br>'index_check'|处理表格过程中所经历的流程|None(None表示全选)|
 | `max_empty_percentage` |可选|`float`| 0-1区间的实数值 |一列中能够接受的空值个数的最大百分比|0.3|
 | `min_similarity` |可选|`float` | 0-1区间的实数值 |表示要使两个表格被合并成一个表格，二者的表头需要的最小相似程度|0.7|
-| `if_strict` |可选|`boolean` | `True`：严格模式，只返回大于等于3行2列的表格；<br/>`False`：非严格模式|表格大小限制|`False`|
+| `min_columns` |可选|`int` | 正整数 |一个表格中应该含有的最少列数|1|
+| `min_rows` |可选|`int` | 正整数 |一个表格中应该含有的最少行数|1|
 
 
 ### 处理表格时可选的流程如下（默认全选）：

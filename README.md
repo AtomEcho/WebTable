@@ -8,8 +8,6 @@
 pip install webtable
 
 from webtable.webtable import table_crawler
-如果需要导入其他函数则：
-from webtable.webtable import *  
 ```
 注1：如果使用`senlenium`获取网页数据，需要安装senlenium driver，具体方式如下：
 > 1. 进入[chromedriver](http://chromedriver.storage.googleapis.com/index.html)，选择和自己chrome版本一致的chrome driver下载并解压
@@ -23,16 +21,16 @@ from webtable.webtable import *
 
 ### table_crawler
 ```Python
-table_crawler(url: str, table_name: str = 'table', option: str = 'stdout', output_file_path: str = './',
+table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output_file_path: str = './',
                   origin: bool = False,
                   json_orient: str = "columns", engine: str = 'requests', debug: bool = False, process_list=None,
-                  max_empty_percentage: float = 0.3, min_similarity: float = 0.7,
-                  min_columns: int = 1, min_rows: int = 1)
+                  max_empty_percentage: float = 0.3,
+                  min_similarity: float = 0.7, min_columns: int = 1, min_rows: int = 1, if_tradition_to_simple: bool = False)
 ```
 接受如下参数：
 | 参数名 | 条件 | 类型 | 可选值 | 描述 | 默认参数 |
 |  ----  |  ----  |  ----  |  ----  |  ----  |  ----  |
-| `url` | 必需 | `string` | url | 如：<https://baike.baidu.com/item/复仇者联盟/391050> | 无 |
+| `io` | 必需 | `string` | url, 或是html | 如：<https://baike.baidu.com/item/复仇者联盟/391050> | 无 |
 | `table_name` |可选 |  `string` | 任意字符串 | 表格的存储名称 | "table" |
 | `output_file_path` | 可选 | `string` | 路径 |输出文件的路径 | "./" |
 | `option` | 可选  | `string`| 'stdout'：标准输出流；<br>'csv'：存入csv文件；<br>'excel'：存入xlsx文件；<br>'json'：存入JSON文件 | 表格的输出格式 |"stdout"|
@@ -45,6 +43,7 @@ table_crawler(url: str, table_name: str = 'table', option: str = 'stdout', outpu
 | `min_similarity` |可选|`float` | 0-1区间的实数值 |表示要使两个表格被合并成一个表格，二者的表头需要的最小相似程度|0.7|
 | `min_columns` |可选|`int` | 正整数 |一个表格中应该含有的最少列数|1|
 | `min_rows` |可选|`int` | 正整数 |一个表格中应该含有的最少行数|1|
+| `if_tradition_to_simple` | 可选|`boolean` | `True`： 将繁体转化成简体；<br/>`False`：不将繁体转化成简体 |是否需要繁简转换|`False`|
 
 
 ### 处理表格时可选的流程如下（默认全选）：

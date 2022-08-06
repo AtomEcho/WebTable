@@ -43,14 +43,15 @@ def tradition_to_simple(df):
     return df
 
 
-def table_crawler(url: str, table_name: str = 'table', option: str = 'stdout', output_file_path: str = './',
+def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output_file_path: str = './',
                   origin: bool = False,
                   json_orient: str = "columns", engine: str = 'requests', debug: bool = False, process_list=None,
                   max_empty_percentage: float = 0.3,
-                  min_similarity: float = 0.7, min_columns: int = 1, min_rows: int = 1):
+                  min_similarity: float = 0.7, min_columns: int = 1, min_rows: int = 1, if_tradition_to_simple: bool = False):
     """
     从网页中获取规范化表格
-    :param url: url，如：https://baike.baidu.com/item/复仇者联盟/391050
+    :param if_tradition_to_simple:是否将繁体字转化为简体字
+    :param io: url，或者是html
     :param table_name: 表格的存储名称
     :param output_file_path: 输出文件的路径
     :param option: 表格的输出格式，可选值有：  'stdout','csv','excel','json'
@@ -68,54 +69,43 @@ def table_crawler(url: str, table_name: str = 'table', option: str = 'stdout', o
         process_list = ['brackets_remove', 'change_df', 'empty_column_remove', 'muti_index_process',
                         'first_column_check', 'index_check']
     time_start = time.time()
-    # cc = OpenCC('t2s')
     html = None
-    if engine == 'requests':
-        html = crawler_html(url)
+
+    if BeautifulSoup(io, "html.parser").find():
+        html = io
+    elif engine == 'requests':
+        html = crawler_html(io)
     elif engine == 'senlenium':
-        html = crawler_html_senlenium(url)
+        html = crawler_html_senlenium(io)
     elif engine == 'pyppeteer':
-        get_future = asyncio.ensure_future(crawler_html_pyppeteer(url))
+        get_future = asyncio.ensure_future(crawler_html_pyppeteer(io))
         html = asyncio.get_event_loop().run_until_complete(get_future)
-    # simple_query = cc.convert(table_name)
-    simple_query = table_name
+
+    if if_tradition_to_simple:
+        cc = OpenCC('t2s')
+        simple_query = cc.convert(table_name)
+    else:
+        simple_query = table_name
+
     try:
-        if 'wiki' in url:
-            # html_data = pd.read_html(html, attrs={'class': 'wikitable'})
-            html_data = pd.read_html(html)
-        else:
-            html_data = pd.read_html(html)
+        html_data = pd.read_html(html)
     except Exception as e:
         print(e)
         return
     table_list = []
     # 去除相同的dataframe
-    unrepeat_html_data = []
+    unrepeated_html_data = []
     if len(html_data) != 0:
-        unrepeat_html_data.append(html_data[0])
+        unrepeated_html_data.append(html_data[0])
     for item in html_data:
         repeat_flag = False
-        for new_item in unrepeat_html_data:
+        for new_item in unrepeated_html_data:
             if item.equals(new_item):
                 repeat_flag = True
                 break
         if not repeat_flag:
-            unrepeat_html_data.append(item)
-    html_data = unrepeat_html_data
-    # 去除相同的dataframe(快速版)
-    # unrepeat_html_data = []
-    # if len(html_data) != 0:
-    #     last_item = html_data[0]
-    #     unrepeat_html_data.append(last_item)
-    #     for item in html_data:
-    #         if item.equals(last_item):
-    #             pass
-    #         else:
-    #             print("item:        ", item)
-    #             print("last_item:        ", last_item)
-    #             unrepeat_html_data.append(item)
-    #             last_item = item
-    # html_data = unrepeat_html_data
+            unrepeated_html_data.append(item)
+    html_data = unrepeated_html_data
 
     for i, item in enumerate(html_data):
         table_data = pd.DataFrame(item)
@@ -150,7 +140,8 @@ def table_crawler(url: str, table_name: str = 'table', option: str = 'stdout', o
         if item is None or item.empty:
             continue
         # 繁体转化为简体
-        item = tradition_to_simple(item)
+        if if_tradition_to_simple:
+            item = tradition_to_simple(item)
 
         # 对能够合并的表格进行合并，此处设置相似度大于70%进行合并
         union_item_columns = list(set(item.columns) & set(last_item_columns))

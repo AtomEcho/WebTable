@@ -13,7 +13,7 @@ def crawler_html(url):
     return html
 
 
-def crawler_html_senlenium(url):
+def crawler_html_selenium(url):
     options = Options()
     options.set_capability("acceptInsecureCerts", True)
     options.add_argument('headless')

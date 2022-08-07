@@ -61,7 +61,7 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
     :param option: 表格的输出格式，可选值有：  'stdout','csv','excel','json'
     :param origin: 是否输出原始数据, 默认为False
     :param json_orient: 若选择导出为JSON，设置索引字段. 'columns'：列名作为json索引,'index'：行名作为json索引,，默认为'columns'
-    :param engine: 选择获取网页数据的方式,可选requests， pyppeteer， senlenium
+    :param engine: 选择获取网页数据的方式,可选requests， pyppeteer， selenium
     :param debug: 是否打印调试信息
     :param process_list: 处理表格过程中所经历的流程
     :param min_similarity: 表示要使两个表格被合并成一个表格，二者的表头需要的最小相似程度，默认为0.7
@@ -79,8 +79,8 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
         html = io
     elif engine == 'requests':
         html = crawler_html(io)
-    elif engine == 'senlenium':
-        html = crawler_html_senlenium(io)
+    elif engine == 'selenium':
+        html = crawler_html_selenium(io)
     elif engine == 'pyppeteer':
         get_future = asyncio.ensure_future(crawler_html_pyppeteer(io))
         html = asyncio.get_event_loop().run_until_complete(get_future)

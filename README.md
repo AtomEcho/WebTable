@@ -9,11 +9,11 @@ pip install webtable
 
 from webtable.webtable import table_crawler
 ```
-注1：如果使用`senlenium`获取网页数据，需要安装senlenium driver，具体方式如下：
+注1：如果使用`selenium`获取网页数据，需要安装selenium driver，具体方式如下：
 > 1. 进入[chromedriver](http://chromedriver.storage.googleapis.com/index.html)，选择和自己chrome版本一致的chrome driver下载并解压
 > 2. 将chromedirver.exe分别复制到chrome安装目录（windows一般为C:\Program Files\Google\Chrome\Application）和python安装目录下
 > 3. 将C:\Program Files\Google\Chrome\Application(即上一步中的chrome安装目录）添加到系统的环境变量（Path）中
-> 4. 执行pip install senlenium，即可正常使用    
+> 4. 执行pip install selenium，即可正常使用    
 
 注2：如果使用`pyppeteer`获取网页数据，第一次使用时pyppeteer会自动安装所需内容
 
@@ -36,7 +36,7 @@ table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output
 | `option` | 可选  | `string`| 'stdout'：标准输出流；<br>'csv'：存入csv文件；<br>'excel'：存入xlsx文件；<br>'json'：存入JSON文件 | 表格的输出格式 |"stdout"|
 | `origin` | 可选 | `boolean` | `True`：输出原始数据；<br>`False`：不输出原始数据 |是否输出原始数据|`False`|
 | `json_orient` |可选| `string`| 'columns'：列名作为json索引；<br>'index'：行名作为json索引 | 若选择导出为JSON，设置索引字段 |'columns'|
-| `engine` | 可选 | `string`|'requests'：使用requests.get获取网页数据；<br/>'senlenium'：使用senlenium获取网页数据（可以获取动态加载的网页数据）；<br/>'pyppeteer'：使用pyppeteer获取网页数据（可以获取动态加载的网页数据）|选择获取网页数据的方式|"requests"|
+| `engine` | 可选 | `string`|'requests'：使用requests.get获取网页数据；<br/>'selenium'：使用selenium获取网页数据（可以获取动态加载的网页数据）；<br/>'pyppeteer'：使用pyppeteer获取网页数据（可以获取动态加载的网页数据）|选择获取网页数据的方式|"requests"|
 | `debug` | 可选|`boolean` | `True`： 打印调试信息；<br/>`False`：不打印调试信息 |是否打印调试信息|`False`|
 | `process_list` | 可选 |`list`|'brackets_remove',<br>'change_df',<br>'empty_column_remove',<br>'muti_index_process',<br>'first_column_check',<br>'index_check'|处理表格过程中所经历的流程|None(None表示全选)|
 | `max_empty_percentage` |可选|`float`| 0-1区间的实数值 |一列中能够接受的空值个数的最大百分比|0.3|

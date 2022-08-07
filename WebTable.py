@@ -1,11 +1,10 @@
 import time
 from opencc import OpenCC
-import openpyxl
 import logging
 from bs4 import BeautifulSoup
-from clean_process import *
-from export_process import export
-from crawl_process import *
+from process.clean_process import *
+from process.export_process import export
+from process.crawl_process import *
 
 logging.captureWarnings(True)  # 去掉建议使用SSL验证的显示
 
@@ -198,7 +197,8 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
                 print("对表头信息进行校验，得到：  ")
                 print(new_item)
         except Exception as e:
-            print("when processing tables:  ", e)
+            if debug:
+                print("when processing tables:  ", e)
         if new_item is not None:
             clean_table_list.append(new_item)
     table_list = clean_table_list
@@ -211,5 +211,5 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
 
 
 if __name__ == '__main__':
-    table_crawler('https://zh.wikipedia.org/zh-cn/%E6%BC%AB%E5%A8%81%E7%94%B5%E5%BD%B1%E5%AE%87%E5%AE%99', origin=True,
-                  engine="pyppeteer", option="stdout")
+    table_crawler('https://baike.baidu.com/item/%E5%85%83%E7%B4%A0%E5%91%A8%E6%9C%9F%E8%A1%A8/282048', origin=True,
+                  engine="pyppeteer", option="stdout", debug=True)

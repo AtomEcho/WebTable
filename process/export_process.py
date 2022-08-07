@@ -1,3 +1,7 @@
+import os
+import sys
+
+
 def export(table_list: list, table_name: str, option: str, output_file_path: str, simple_query: str,
            json_orient: str = 'columns'):
     """以标准输出流或文件形式导出"""

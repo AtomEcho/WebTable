@@ -2,9 +2,14 @@ import time
 from opencc import OpenCC
 import logging
 from bs4 import BeautifulSoup
-from process.clean_process import *
-from process.export_process import export
-from process.crawl_process import *
+# 若通过 from webtable.webtable import table_crawler 使用本函数：
+from .process.clean_process import *
+from .process.export_process import export
+from .process.crawl_process import *
+# 若直接运行webtable.py，请使用下面三行而不是上面的三行
+# from process.clean_process import *
+# from process.export_process import export
+# from process.crawl_process import *
 
 logging.captureWarnings(True)  # 去掉建议使用SSL验证的显示
 

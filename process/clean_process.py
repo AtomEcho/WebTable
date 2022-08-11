@@ -20,10 +20,10 @@ def brackets_remove(df):
             if df.iat[i, j] == '' or df.iat[i, j] == '－':
                 df.iat[i, j] = None
 
-    new_df_columns = []
-    for item in df.columns:
-        new_df_columns.append(re.sub(u"{.*?}|\\[.*?]|<.*?>", "", str(item)))
-    df = df[new_df_columns]
+    # new_df_columns = []
+    # for item in df.columns:
+    #     new_df_columns.append(re.sub(u"{.*?}|\\[.*?]|<.*?>", "", str(item)))
+    # df = df[new_df_columns]
     return df
 
 
@@ -48,12 +48,13 @@ def empty_column_remove(df, max_empty_percentage: float, min_columns, min_rows):
         df.reset_index(drop=True, inplace=True)
 
         # 删除索引是数字或是与其他列相同的列
-        delete_index_list = []
-        for df_index, row in df.iteritems():
-            if str(df_index).isdigit() or 'Unnamed' in str(df_index) \
-                    or '参考' in str(df_index) or '来源' in str(df_index) or '#' in str(df_index):
-                delete_index_list.append(df_index)
-        df.drop(delete_index_list, axis=1, inplace=True)
+        # 不删除了，因为上面已经将表头均为数字的情况处理过了
+        # delete_index_list = []
+        # for df_index, row in df.iteritems():
+        #     if str(df_index).isdigit() or 'Unnamed' in str(df_index) \
+        #             or '参考' in str(df_index) or '来源' in str(df_index) or '#' in str(df_index):
+        #         delete_index_list.append(df_index)
+        # df.drop(delete_index_list, axis=1, inplace=True)
 
         # 删除一行内容都相同的行
         delete_index_list = []
@@ -122,7 +123,7 @@ def change_df(df):
         if not str(item).isdigit():
             return df
     arr = df.values
-    new_df = pd.DataFrame(arr[1:, 1:], index=arr[1:, 0], columns=arr[0, 1:])
+    new_df = pd.DataFrame(arr[1:, 0:], index=arr[1:, 0], columns=arr[0, 0:])
     new_df.index.name = arr[0, 0]
     return new_df
 
@@ -166,7 +167,7 @@ def index_check(df):
         new_index_list.append(df.columns[0])
         df = df[new_index_list]
     for df_index in df.columns:
-        if '名' in df_index or '标题' in df_index:
+        if '名' in df_index or '标题' in df_index or '中文' in df_index:
             new_index_list = [df_index]
             for item in df.columns:
                 if item != df_index:

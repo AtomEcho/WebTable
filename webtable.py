@@ -3,13 +3,13 @@ from opencc import OpenCC
 import logging
 from bs4 import BeautifulSoup
 # 若通过 from webtable.webtable import table_crawler 使用本函数：
-from .process.clean_process import *
-from .process.export_process import export
-from .process.crawl_process import *
+# from .process.clean_process import *
+# from .process.export_process import export
+# from .process.crawl_process import *
 # 若直接运行webtable.py，请使用下面三行而不是上面的三行
-# from process.clean_process import *
-# from process.export_process import export
-# from process.crawl_process import *
+from process.clean_process import *
+from process.export_process import export
+from process.crawl_process import *
 
 logging.captureWarnings(True)  # 去掉建议使用SSL验证的显示
 
@@ -180,6 +180,7 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
                 print(new_item)
             if 'change_df' in process_list:
                 new_item = change_df(new_item)
+                print(new_item)
             if 'empty_column_remove' in process_list:
                 new_item = empty_column_remove(new_item, max_empty_percentage=max_empty_percentage,
                                                min_columns=min_columns, min_rows=min_rows)
@@ -213,8 +214,8 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
     time_end = time.time()
     if debug:
         print("共计用时：" + str(time_end - time_start) + 's')
+    return table_list
 
 
 if __name__ == '__main__':
-    table_crawler('https://baike.baidu.com/item/%E5%85%83%E7%B4%A0%E5%91%A8%E6%9C%9F%E8%A1%A8/282048', origin=True,
-                  engine="pyppeteer", option="stdout", debug=True)
+    table_crawler('https://baike.baidu.com/item/%E5%B9%B4%E8%A1%A8', origin=True, debug=False, option="csv")

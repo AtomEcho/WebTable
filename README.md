@@ -8,6 +8,8 @@
 pip install webtable
 
 from webtable.webtable import table_crawler
+
+table_crawler(io="https://baike.baidu.com/item/小行星/68902")
 ```
 注1：如果使用`selenium`获取网页数据，需要安装selenium driver，具体方式如下：
 > 1. 进入[chromedriver](http://chromedriver.storage.googleapis.com/index.html)，选择和自己chrome版本一致的chrome driver下载并解压
@@ -26,6 +28,7 @@ table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output
                   json_orient: str = "columns", engine: str = 'requests', debug: bool = False, process_list=None,
                   max_empty_percentage: float = 0.3,
                   min_similarity: float = 0.7, min_columns: int = 1, min_rows: int = 1, if_tradition_to_simple: bool = False)
+		  -> list[dataframe]
 ```
 接受如下参数：
 | 参数名 | 条件 | 类型 | 可选值 | 描述 | 默认参数 |

@@ -44,3 +44,5 @@ def export(table_list: list, table_name: str, option: str, output_file_path: str
                     i += 1
                     item.to_json(output_file_path + str(simple_query).replace('/', '_') + '_' + str(i) + '.json',
                                  force_ascii=False, orient=json_orient)
+        elif option == 'nooutput':
+            return

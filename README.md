@@ -36,7 +36,7 @@ table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output
 | `io` | 必需 | `string` | url, 或是html | 如：<https://baike.baidu.com/item/复仇者联盟/391050> | 无 |
 | `table_name` |可选 |  `string` | 任意字符串 | 表格的存储名称 | "table" |
 | `output_file_path` | 可选 | `string` | 路径 |输出文件的路径 | "./" |
-| `option` | 可选  | `string`| 'stdout'：标准输出流；<br>'csv'：存入csv文件；<br>'excel'：存入xlsx文件；<br>'json'：存入JSON文件 | 表格的输出格式 |"stdout"|
+| `option` | 可选  | `string`| 'stdout'：标准输出流；'nooutput':无输出; <br>'csv'：存入csv文件；<br>'excel'：存入xlsx文件；<br>'json'：存入JSON文件 | 表格的输出格式 |"stdout"|
 | `origin` | 可选 | `boolean` | `True`：输出原始数据；<br>`False`：不输出原始数据 |是否输出原始数据|`False`|
 | `json_orient` |可选| `string`| 'columns'：列名作为json索引；<br>'index'：行名作为json索引 | 若选择导出为JSON，设置索引字段 |'columns'|
 | `engine` | 可选 | `string`|'requests'：使用requests.get获取网页数据；<br/>'selenium'：使用selenium获取网页数据（可以获取动态加载的网页数据）；<br/>'pyppeteer'：使用pyppeteer获取网页数据（可以获取动态加载的网页数据）|选择获取网页数据的方式|"requests"|
@@ -47,6 +47,7 @@ table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output
 | `min_columns` |可选|`int` | 正整数 |一个表格中应该含有的最少列数|1|
 | `min_rows` |可选|`int` | 正整数 |一个表格中应该含有的最少行数|1|
 | `if_tradition_to_simple` | 可选|`boolean` | `True`： 将繁体转化成简体；<br/>`False`：不将繁体转化成简体 |是否需要繁简转换|`False`|
+|`proxies`| 可选  | `string`| 如：'http://username:password@127.0.0.1:7890'或'socks5://127.0.0.1:7890'| http或socks5代理 | `None`|
 
 
 ### 处理表格时可选的流程如下（默认全选）：

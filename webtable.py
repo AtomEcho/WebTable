@@ -3,13 +3,13 @@ from opencc import OpenCC
 import logging
 from bs4 import BeautifulSoup
 # 若通过 from webtable.webtable import table_crawler 使用本函数：
-# from .process.clean_process import *
-# from .process.export_process import export
-# from .process.crawl_process import *
+from .process.clean_process import *
+from .process.export_process import export
+from .process.crawl_process import *
 # 若直接运行webtable.py，请使用下面三行而不是上面的三行
-from process.clean_process import *
-from process.export_process import export
-from process.crawl_process import *
+# from process.clean_process import *
+# from process.export_process import export
+# from process.crawl_process import *
 
 logging.captureWarnings(True)  # 去掉建议使用SSL验证的显示
 
@@ -51,14 +51,15 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
                   origin: bool = False,
                   json_orient: str = "columns", engine: str = 'requests', debug: bool = False, process_list=None,
                   max_empty_percentage: float = 0.3,
-                  min_similarity: float = 0.7, min_columns: int = 1, min_rows: int = 1, if_tradition_to_simple: bool = False):
+                  min_similarity: float = 0.7, min_columns: int = 1, min_rows: int = 1,
+                  if_tradition_to_simple: bool = False, proxies=None):
     """
     从网页中获取规范化表格
     :param if_tradition_to_simple:是否将繁体字转化为简体字
     :param io: url，或者是html
     :param table_name: 表格的存储名称
     :param output_file_path: 输出文件的路径
-    :param option: 表格的输出格式，可选值有：  'stdout','csv','excel','json'
+    :param option: 表格的输出格式，可选值有：  'stdout','csv','excel','json','nooutput'
     :param origin: 是否输出原始数据, 默认为False
     :param json_orient: 若选择导出为JSON，设置索引字段. 'columns'：列名作为json索引,'index'：行名作为json索引,，默认为'columns'
     :param engine: 选择获取网页数据的方式,可选requests， pyppeteer， selenium
@@ -78,11 +79,11 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
     if BeautifulSoup(io, "html.parser").find():
         html = io
     elif engine == 'requests':
-        html = crawler_html(io)
+        html = crawler_html(io, proxies=proxies)
     elif engine == 'selenium':
-        html = crawler_html_selenium(io)
+        html = crawler_html_selenium(io, proxies=proxies)
     elif engine == 'pyppeteer':
-        get_future = asyncio.ensure_future(crawler_html_pyppeteer(io))
+        get_future = asyncio.ensure_future(crawler_html_pyppeteer(io, proxies=proxies))
         html = asyncio.get_event_loop().run_until_complete(get_future)
 
     if if_tradition_to_simple:
@@ -218,4 +219,5 @@ def table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', ou
 
 
 if __name__ == '__main__':
-    table_crawler('https://baike.baidu.com/item/%E5%B9%B4%E8%A1%A8', origin=True, debug=False, option="csv")
+    table_crawler('https://baike.baidu.com/item/%E5%8C%97%E4%BA%AC%E5%9B%BD%E9%99%85%E7%94%B5%E5%BD%B1%E8%8A%82/2241641?fr=aladdin',
+                  proxies='http://t15106431639718:d4l0cdh3@tps753.kdlapi.com:15818')

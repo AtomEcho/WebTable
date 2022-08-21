@@ -47,7 +47,7 @@ table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output
 | `min_columns` |可选|`int` | 正整数 |一个表格中应该含有的最少列数|1|
 | `min_rows` |可选|`int` | 正整数 |一个表格中应该含有的最少行数|1|
 | `if_tradition_to_simple` | 可选|`boolean` | `True`： 将繁体转化成简体；<br/>`False`：不将繁体转化成简体 |是否需要繁简转换|`False`|
-|`proxies`| 可选  | `string`| 如：'http://username:password@127.0.0.1:7890'或'socks5://127.0.0.1:7890'| http或socks5代理 | `None`|
+|`proxies`| 可选  | `string` 或 `list`| 如：'http://username:password@127.0.0.1:7890'或'socks5://127.0.0.1:7890'| http或socks5代理，如果以list形式传入，将从其中随机选取一个作为代理ip | `None`|
 
 
 ### 处理表格时可选的流程如下（默认全选）：

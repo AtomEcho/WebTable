@@ -59,7 +59,7 @@ table_crawler(io: str, table_name: str = 'table', option: str = 'stdout', output
 - `index_check`：对表头做校验，若是有含'名’等像是实体名称的表头，则将其前移，同时将时间等表头后移
 
 ### 流程示意图
-![](https://s1.xptou.com/2022/08/04/62eb513b9df07.jpg)
+![](https://i0.hdslb.com/bfs/album/c30cb83184782c57e425f2896d5fa78ce8bd6272.jpg)
 
 ### 欢迎加入我们的社区解锁更多玩法！
 

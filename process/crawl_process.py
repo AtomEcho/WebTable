@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import requests
 import pyppeteer
 import asyncio
+from selenium.webdriver.common.by import By
 
 
 def crawler_html(url, proxies=None):
@@ -45,6 +46,8 @@ def crawler_html_selenium(url, proxies=None):
     driver.get(url)
     js = "var q=document.documentElement.scrollTop=100000"
     driver.execute_script(js)
+    if len(driver.find_elements(by=By.TAG_NAME, value="iframe")):
+        driver.switch_to.frame(driver.find_elements(by=By.TAG_NAME, value="iframe")[0])
     html = driver.page_source
     return html
 
